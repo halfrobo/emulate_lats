@@ -1,6 +1,7 @@
 % Author: Tushar Semwal (semwaltushar@gmail.com)
 % Date: 07-Jul-16
 
+
 %% Assert the neighbour map %%
 ngbh_list(p1,1,localhost,7002).
 ngbh_list(p2,1,localhost,7001).
@@ -17,11 +18,11 @@ ngbh_list(p7,1,localhost,7006).
 %% ======================== %%
 
 %% Assert neighbour count %%
-ngbh_count(2).
+%ngbh_count(2).
 %% ====================== %%
 
 
-
+:-dynamic(main/5).
 main(Ip,Port,Token,ServerIp,ServerPort):-
         consult('platform.pl'),
         platform_start(Ip,Port),
@@ -29,6 +30,10 @@ main(Ip,Port,Token,ServerIp,ServerPort):-
         atom_number(A,Num),
         atom_concat(p,A,Anew),
         assert(node_name(Anew)),
+        set_token(1111),
+        ((Anew==p1;Anew==p7)->consult('crowd_agent.pl'),assert(ngbh_count(1))
+        ;
+        assert(ngbh_count(2))),
         %set_token(Token),
         %set_log_server(ServerIp,ServerPort),
         %set_server_Ip(ServerIp),
